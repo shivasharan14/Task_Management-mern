@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 import Login from "./pages/Login";
@@ -7,10 +9,18 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import UpdateTask from "./components/UpdateTask";
 import AllTasks from "./components/AllTasks";
+import { ThemeContext, ThemeProvider } from "./components/context/ThemeContext";
+
+import "./index.css";
 
 function App() {
+  
+
   return (
+    <ThemeProvider>
     <BrowserRouter>
+    
+    <ToastContainer position="top-right" autoClose={2000} />
       <Routes>
         <Route path="/" element={<Login />} />
 
@@ -44,6 +54,7 @@ function App() {
       </Routes>
       
     </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

@@ -49,14 +49,14 @@ async function getTaskByID(req, res) {
 
 // ३. टास्कचा स्टेटस अपडेट करणे
 async function updateStatus(req, res) {
-    const ID = req.params.ID;
+    const id = req.params.ID;
     const status = req.body.status;
     try {
-        const statuArr = ["Pending", "Inprogress", "Completed"];
+        const statuArr = ["Pending", "InProgress", "Completed"];
         if (!statuArr.includes(status)) {
             return res.status(400).send({ msg: "Data not found", success: false });
         }
-        const taskForStatusUpdate = await Task.findByPk(ID);
+        const taskForStatusUpdate = await Task.findByPk(id);
         
         if (!taskForStatusUpdate) {
             return res.status(400).send({ msg: "Task not found", success: false });

@@ -7,38 +7,46 @@ const AssignTask = require('../models/assigntaskmodel')
 
 
  
- async function AssignTaskToUser(req,res){
-    const {userID,taskID} = req.body
+ async function AssignTaskToUser(req, res) {
+    const { userID, taskID } = req.body;
+
     try {
-         const user = await User.findByPk(userID)
-        const task = await Task.findByPk(taskID)
-
-  
-    if(!userID || !taskID){
-        return res.status(400).send({msg:"user not found" ,success:false})
-    }
-
-    const exists = await AssignTask.findOne({
-            where: { userID, taskID }
-        });
-
-
-        if (exists) {
-            return res.status(400).send({
-                msg: "Task already assigned to this user",
-                success: false
-            });
+       
+        if (!userID || !taskID) {
+            return res.status(400).send({ msg: "userID and taskID are required", success: false });
         }
 
+        
+        const user = await User.findByPk(userID);
+        const task = await Task.findByPk(taskID);
 
-    const newassigntask =  await AssignTask.create({userID:userID, taskID:taskID})
+        if (!user) {
+            return res.status(404).send({ msg: "User not found", success: false });
+        }
+        if (!task) {
+            return res.status(404).send({ msg: "Task not found", success: false });
+        }
 
-    res.status(200).send({newaasigntask:newassigntask,msg:"task assigned successfuly",success:true})
+        
+        const exists = await AssignTask.findOne({ where: { userID, taskID } });
+        if (exists) {
+            return res.status(400).send({ msg: "Task is already assigned to this user", success: false });
+        }
+
+       
+        const newAssignTask = await AssignTask.create({ userID, taskID });
+        
+        res.status(200).send({ 
+            newAssignTask, 
+            msg: "Task assigned successfully", 
+            success: true 
+        });
+
     } catch (error) {
-        res.status(500).send({msg:'server error' ,success: false})
+        console.error("AssignTask Error:", error);
+        res.status(500).send({ msg: 'Server error', success: false });
     }
-
- }
+}
 
  async function  getAllassigntask(req,res){
     try {

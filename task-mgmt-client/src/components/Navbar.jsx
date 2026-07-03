@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserInfo } from "../services/userservices";
+import { useContext } from "react";
+import { ThemeContext } from "./context/ThemeContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   useEffect(() => {
     fetchUser();
-  }, [navigate]);
+  }, []);
 
   const fetchUser = async () => {
     try {
@@ -32,13 +35,14 @@ const Navbar = () => {
 
       // ✅ API call
       const res = await getUserInfo(payload.id);
+      console.log(res)
 
-      if (res?.success) {
-        setUser(res.loggedUser);
-      } else {
-        localStorage.removeItem("token");
-        navigate("/");
-      }
+     if (res && res.name) { // रिस्पॉन्समध्ये 'name' आहे का ते तपासा
+  setUser(res);       // थेट 'res' सेट करा
+} else {
+  localStorage.removeItem("token");
+  navigate("/");
+}
     } catch (error) {
       console.log(error);
       localStorage.removeItem("token");
@@ -52,32 +56,45 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div className="container">
+  <nav className={`navbar navbar-expand-lg ${theme === "dark" ? "navbar-dark bg-dark" : "navbar-light bg-white"}`} 
+     style={{ borderBottom: theme === "dark" ? "2px solid #444" : "2px solid #dee2e6",borderTop: theme === "dark" ? "1px solid #444" : "2px solid #dee2e6",
+      borderRight: theme === "dark" ? "1px solid #444" : "1px solid #dee2e6",
+      borderLeft: theme === "dark" ? "1px solid #444" : "1px solid #dee2e6"
+      }}>
+  <div className="container">
+    {/* Brand */}
+    <span className="navbar-brand">Task Management</span>
 
-        {/* Brand */}
-        <span className="navbar-brand">
-          Task Management
-        </span>
+    {/* Right side */}
+    <div className="d-flex align-items-center">
+      {user?.profile && (
+        <img
+          src={`http://localhost:5004/uploads/users/${user.profile}`}
+          alt="Profile"
+          width="40"
+          height="40"
+          className="rounded-circle me-2"
+        />
+      )}
 
-        {/* Right side */}
-        <div className="d-flex align-items-center">
+     
+      <span className="navbar-text me-3">
+        Welcome, {user?.name || "User"}
+      </span>
 
-          <span className="text-white me-3">
-            Welcome, {user?.name || "User"}
-          </span>
+      <button 
+        onClick={toggleTheme} 
+        className={`btn btn-sm ${theme === "dark" ? "btn-outline-light" : "btn-outline-dark"} me-2`}
+      >
+        {theme === "light" ? "☀️ Light" : "🌙 Dark"} 
+      </button>
 
-          <button
-            className="btn btn-danger"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-
-        </div>
-
-      </div>
-    </nav>
+      <button className="btn btn-danger btn-sm" onClick={handleLogout}>
+        Logout
+      </button>
+    </div>
+  </div>
+</nav>
   );
 };
 

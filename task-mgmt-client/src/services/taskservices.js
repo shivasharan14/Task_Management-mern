@@ -24,6 +24,12 @@ export const updateTask = async (id, data) => {
   return response.data;
 };
 
+ export const updatestatus =async(id,data) =>{
+  const response = await axiosInstance.patch(`/task/updateStatus/${id}`,data);
+  return response.data;
+}
+
+
 
 export const deleteTask = async (id) => {
   const response = await axiosInstance.delete(`/task/task/${id}`); //

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
@@ -9,11 +9,14 @@ import UserDashboard from "../components/UserDashboard";
 import AllTasks from "../components/AllTasks";
 import CreateTask from "../components/CreateTask";
 import UpdateTask from "../components/UpdateTask";
+
 import AdminProfile from "../components/AdminProfile";
+import { ThemeContext } from "../components/context/ThemeContext";
 import { useState } from "react";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
   const [page, setPage] = useState("dashboard");
 
   useEffect(() => {
@@ -23,13 +26,15 @@ const Dashboard = () => {
     }
   }, [navigate]);
 
-  // 💡 थेट लोकल स्टोरेजमधून रोल वाचूया, जेणेकरून स्टेट बदलण्याची किंवा लोडिंग होण्याची वाट पाहावी लागणार नाही!
+  const themeClass = theme === "dark" ? "bg-dark text-light" : "bg-light text-dark";
+
+ 
   const currentRole = localStorage.getItem("role")?.toLowerCase().trim() || "user";
 
   const renderPage = () => {
     switch (page) {
       case "dashboard":
-        // 💡 आता इथे टाईमिंगचा अजिबात घोळ होणार नाही, ॲडमिनला ॲडमिनच डॅशबोर्ड दिसेल!
+       
         if (currentRole === "admin") {
           return <AdminDashboard setPage={setPage} />;
         } else {
@@ -59,16 +64,21 @@ const Dashboard = () => {
 
   return (
     <>
+   <div className={`card shadow-sm p-2 ${theme === "dark" ? "bg-dark text-white" : "bg-white text-dark"}`}>
       <Navbar />
 
       <div className="d-flex">
-        {/* साईडबारला सुद्धा डायरेक्ट रोल पास केला */}
-        <Sidebar setPage={setPage} userRole={currentRole} />
+        <Sidebar setPage={setPage} userRole={currentRole} theme={theme}/>
 
-        <div className="flex-grow-1 p-4" style={{ backgroundColor: "#f8f9fa", minHeight: "90vh" }}>
+       
+        <div className="flex-grow-1 p-4" style={{ 
+            backgroundColor: theme === "dark" ? "#212529" : "#f8f9fa", 
+            minHeight: "90vh" 
+        }}>
           {renderPage()}
         </div>
       </div>
+    </div>
     </>
   );
 };

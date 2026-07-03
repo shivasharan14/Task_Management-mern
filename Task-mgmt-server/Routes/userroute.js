@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const uploadImage = require('../middleware/multer')
 const {
   registerUser,
   
@@ -8,12 +8,13 @@ const {
   getUserInfo,
   loginUser,
   getAllUsers,
+  updateUser,
  
 } = require("../controllers/userController");
 const {auth} = require("../middleware/auth");
 
 // Register User
-router.post("/register", registerUser);
+router.post("/register",uploadImage.single('profile'), registerUser);
 
 // Login User
 router.post("/login", loginUser);
@@ -22,7 +23,8 @@ router.post("/login", loginUser);
 // Get User Information
 router.get("/userinfo/:id", auth,  getUserInfo);
 router.get("/getall", auth, getAllUsers);
-// // Update User Profile
-// router.put("/updateprofile/:id", updateProfile);
+
+router.put('/update/:id', uploadImage.single('profile'), updateUser);
+
 
 module.exports = router;

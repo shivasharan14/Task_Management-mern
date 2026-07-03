@@ -26,7 +26,7 @@ enddate: {
     allowNull: false
 },
     status:{
-        type:DataTypes.ENUM("Pending","Inprogress","completed"),
+        type:DataTypes.ENUM("Pending","InProgress","completed"),
         allowNull:true,
         defaultValue:"Pending"
     }

@@ -32,9 +32,14 @@ const User = sequelize.define("User", {
     type: DataTypes.ENUM("user", "admin"),
     defaultValue: "user",
   },
+  profile:{
+      type:DataTypes.STRING,
+    }
+
+  
   
 },
-{
+  {
     tableName: "users",
     timestamps: true, 
   }

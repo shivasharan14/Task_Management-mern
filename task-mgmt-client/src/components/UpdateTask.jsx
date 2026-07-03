@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getTaskById, updateTask } from "../services/taskservices";
+import { toast } from "react-toastify"
 
 const UpdateTask = () => {
   const { id } = useParams();
@@ -66,14 +67,14 @@ const UpdateTask = () => {
       const msg = response?.msg || response?.data?.msg || "Task Updated Successfully";
 
       if (isSuccess) {
-        alert("Task Updated Successfully");
+        toast.success("Task Updated Successfully");
         navigate("/all-tasks");
       } else {
-        alert(msg);
+        toast.error(msg);
       }
     } catch (error) {
       console.log("Update Error:", error);
-      alert("Update Failed");
+      toast.error("Update Failed");
     }
   };
 

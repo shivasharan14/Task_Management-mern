@@ -1,0 +1,99 @@
+/* 1. Global Reset & Variables */
+:root {
+  --bg-color: #f4f6f9;       /* Light mode background */
+  --card-bg: #ffffff;        /* Light mode card */
+  --text-color: #333333;     /* Dark text */
+  --sidebar-bg: #ffffff;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme='dark'] {
+  --bg-color: #121212;       /* Dark mode background */
+  --card-bg: #1e1e1e;       /* Dark mode card */
+  --text-color: #ffffff;     /* Light text */
+  --sidebar-bg: #1a1a1a;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* 2. Global Styles */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* 3. Cards - Shadows and Depth */
+.card {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  border: none !important;
+  box-shadow: var(--shadow) !important;
+  border-radius: 15px !important;
+  transition: background-color 0.3s ease;
+}
+
+/* 4. Navbar Fixes */
+.navbar {
+  background-color: var(--card-bg) !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: background-color 0.3s ease;
+}
+
+/* 5. Sidebar Styling */
+.sidebar {
+  background-color: var(--sidebar-bg) !important;
+  border-right: 1px solid rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease;
+}
+
+/* 6. Buttons */
+.btn-outline-dark {
+  border-color: #333;
+  color: #333;
+}
+[data-theme='dark'] .btn-outline-dark {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+.btn-outline-dark:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+
+/* Navbar Styling */
+.navbar {
+  background-color: var(--card-bg) !important; 
+  padding: 0.8rem 1rem !important;
+  margin-bottom: 1px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.3s ease;
+}
+
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--text-color) !important;
+  letter-spacing: -0.5px;
+}
+
+.navbar-text {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+
+.navbar img {
+  border: 2px solid #ffc107; 
+  padding: 2px;
+  transition: transform 0.2s ease;
+}
+
+.navbar img:hover {
+  transform: scale(1.05); 
+}

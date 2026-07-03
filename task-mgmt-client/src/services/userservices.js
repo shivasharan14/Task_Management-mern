@@ -2,8 +2,13 @@ import axiosInstance from "../api/axiosInstance";
 
 // Register User
 export const registerUser = async (data) => {
-  const response = await axiosInstance.post("/user/register", data);
-  return response.data;
+  const res = await axiosInstance.post("/user/register", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return res.data;
 };
 
 // Login User

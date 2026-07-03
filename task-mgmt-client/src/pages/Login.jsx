@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../services/userservices";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -25,31 +26,31 @@ const Login = () => {
 
       console.log("LOGIN RESPONSE FROM BACKEND:", res);
 
-      // 💡 बदल १: जर तुमची सर्व्हिस थेट 'res.data' देत असेल किंवा 'res' देत असेल, दोघांना सुरक्षित मॅनेज करू:
+      
       const data = res.data || res;
 
       if (data.success) {
-        // १. टोकन सेव्ह केलं
+        
         localStorage.setItem("token", data.token);
 
-        // २. 💡 मुख्य बदल: आता बॅकएंडवरून येणारा अचूक रोल आणि युझर आयडी इथे सेव्ह होईल!
+       
         localStorage.setItem("role", data.role); 
         localStorage.setItem("userId", data.userId); 
         
-        // (ऑप्शनल) जर युझरचे नाव पण स्टोअर करायचे असेल तर:
+        
         if (data.name) {
           localStorage.setItem("userName", data.name);
         }
 
-        alert(data.msg || "Login Successful 🎉");
+       toast.success(data.msg || "Login Successful 🎉");
         navigate("/dashboard");
       } else {
-        alert(data.msg || "Login Failed");
+        toast.error(data.msg || "Login Failed");
       }
 
     } catch (error) {
       console.log(error);
-      alert(error.response?.data?.msg || "Login Failed ❌");
+      toast.error(error.response?.data?.msg || "Login Failed ❌");
     }
   };
 

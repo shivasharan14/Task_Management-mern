@@ -4,55 +4,49 @@ const User = require('../models/usermodel')
 const bcryptjs = require("bcryptjs");
 const jwt=require('jsonwebtoken')
 
-
 const registerUser = async (req, res) => {
-    try {
-        const { name, email, password, contactNumber } = req.body;
+  try {
+    const { name, email, password, contactNumber } = req.body;
 
-        // Check if user already exists
-        const existUser = await User.findOne({
-            where: {
-                email: email
-            }
-        });
+    const existUser = await User.findOne({
+      where: { email }
+    });
 
-        if (existUser) {
-            return res.status(400).send({
-                success: false,
-                msg: "User already exists"
-            });
-        }
-
-        // Generate Salt
-        const salt = bcryptjs.genSaltSync(10);
-
-        // Hash Password
-        const hashedPassword = bcryptjs.hashSync(password, salt);
-
-        // Create User
-        const newUser = await User.create({
-            name,
-            email,
-            password: hashedPassword,
-            contactNumber
-        });
-
-        return res.status(201).send({
-            success: true,
-            msg: "User registered successfully",
-            data: newUser
-        });
-
-    } catch (error) {
-        console.log(error);
-
-        return res.status(500).send({
-            success: false,
-            msg: "Server Error"
-        });
+    if (existUser) {
+      return res.status(400).send({
+        success: false,
+        msg: "User already exists"
+      });
     }
-};
 
+    const salt = bcryptjs.genSaltSync(10);
+    const hashedPassword = bcryptjs.hashSync(password, salt);
+
+    const profile = req.file ? req.file.filename : null;
+
+    const newUser = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      contactNumber,
+      profile
+    });
+
+    res.status(201).send({
+      success: true,
+      msg: "User registered successfully",
+      data: newUser
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).send({
+      success: false,
+      msg: "Server Error"
+    });
+  }
+};
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
@@ -93,14 +87,14 @@ const loginUser = async (req, res) => {
             }
         );
 
-        // 💡 मुख्य बदल: फ्रंटएंडसाठी टोकनसोबत रोल, आयडी आणि नाव पाठवले!
+        
         return res.status(200).send({
             msg: "Logged in successfully",
             success: true,
             token,
-            role: existingUser.role,      // 👈 हा रोल फ्रंटएंडला जाईल (admin/user)
-            userId: existingUser.id,      // 👈 हा युझर आयडी जाईल
-            name: existingUser.name       // 👈 हे नाव जाईल
+            role: existingUser.role,      
+            userId: existingUser.id,      
+            name: existingUser.name       
         });
 
     } catch (error) {
@@ -119,8 +113,10 @@ const getUserInfo = async (req, res) => {
             attributes:{exclude:["password", "createdAt","updatedAt"]}
         })
 
-        res.status(200).send({loggedUser:loggedUser,success:true})
-
+        res.status(200).send({
+    ...loggedUser.toJSON(), 
+    success: true 
+});
         } catch (error) {
         res.status(500).send({msg:"Server error", success:false})
     }
@@ -139,9 +135,41 @@ async function getAllUsers(req, res) {
   }
 }
 
+
+async function updateUser(req, res) {
+    const ID = req.params.id;
+    try {
+        const user = await User.findByPk(ID);
+        
+        if (!user) {
+            return res.status(404).send({ msg: "User not found", success: false });
+        }
+
+       
+        let updateData = {
+            name: req.body.name,
+            email: req.body.email,
+            contactNumber: req.body.contactNumber
+        };
+
+        if (req.file) {
+            updateData.profile = req.file.filename; // multer मधून येणारे फाइल नाव
+        }
+
+        await user.update(updateData);
+        res.status(200).send({ msg: "Profile updated successfully", success: true, user: user });
+    } catch (error) {
+        console.error("Update error:", error);
+        res.status(500).send({ msg: "Server error", success: false });
+    }
+}
+
+
+
+
 module.exports={
     registerUser,
     loginUser,
     getUserInfo,
-    getAllUsers
+    getAllUsers,updateUser
 }

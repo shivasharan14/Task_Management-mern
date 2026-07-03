@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createTask } from "../services/taskservices";
+import { toast } from "react-toastify";
 
 const CreateTask = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ const CreateTask = () => {
     try {
       const res = await createTask(formData);
 
-      alert(res.data.msg);
+      toast.success(res.data.msg);
 
       setFormData({
         title: "",
@@ -33,7 +34,7 @@ const CreateTask = () => {
     } catch (error) {
       console.log(error);
 
-      alert(error.response?.data?.msg || "Something went wrong");
+      toast.error(error.response?.data?.msg || "Something went wrong");
     }
   };
 

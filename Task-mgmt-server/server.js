@@ -26,6 +26,8 @@ app.use('/user',userRoutes);
 
 app.use('/assign', assignRoutes);
 
+app.use('/uploads', express.static("uploads"))
+
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
