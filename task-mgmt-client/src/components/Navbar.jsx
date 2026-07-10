@@ -69,7 +69,7 @@ const Navbar = () => {
     <div className="d-flex align-items-center">
       {user?.profile && (
         <img
-          src={`http://localhost:5004/uploads/users/${user.profile}`}
+          src={`${import.meta.env.VITE_API_URL}/uploads/users/${user.profile}`}
           alt="Profile"
           width="40"
           height="40"

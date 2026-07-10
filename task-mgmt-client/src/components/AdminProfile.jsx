@@ -44,7 +44,7 @@ const AdminProfile = () => {
               <div className="mb-3">
                 {adminData.profile ? (
                   <img
-                    src={`http://localhost:5004/uploads/users/${adminData.profile}`}
+                    src={`${import.meta.env.VITE_API_URL}/uploads/users/${adminData.profile}`}
                     alt="Profile"
                     className="rounded-circle shadow-sm"
                     style={{ width: "100px", height: "100px", objectFit: "cover", border: "4px solid #ffc107" }}
