@@ -10,7 +10,7 @@ const {
   getAllUsers,
   updateUser,
  
-} = require("../controllers/userController");
+} = require("../controllers/usercontroller");
 const {auth} = require("../middleware/auth");
 
 // Register User
