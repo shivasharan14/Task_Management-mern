@@ -17,7 +17,7 @@ const {
     TotalInprogressTask,
     getTasksBySelectedMonth,
     updateStatus
-} = require('../Controllers/taskcontroller');
+} = require('../controllers/taskcontroller');
 const { auth, admin } = require('../middleware/auth');
 
 // routes
