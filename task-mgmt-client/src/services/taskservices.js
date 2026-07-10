@@ -1,4 +1,4 @@
-import axiosInstance from "../api/axiosInstance";
+import axiosInstance from "../api/axiosinstance";
 import axios from "axios";
 // Create Task
 export const createTask = async (data) => {

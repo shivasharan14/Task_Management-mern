@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axiosInstance from "../api/axiosInstance";
+import axiosInstance from "../api/axiosinstance";
 import { toast } from "react-toastify";
 
 const EditProfile = ({ adminData, onCancel, onSuccess }) => {
