@@ -14,7 +14,8 @@ const assignRoutes = require('./Routes/assigntaskroute');
 app.use(express.json());
 app.use(cors(
     {
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://task-management-mern-orpin.vercel.app"],
+    credentials: true
   }
 ));
 
