@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+
 import { useContext, useEffect } from "react";
 
 import Navbar from "../components/Navbar";
@@ -9,6 +9,7 @@ import UserDashboard from "../components/UserDashboard";
 import AllTasks from "../components/AllTasks";
 import CreateTask from "../components/CreateTask";
 import UpdateTask from "../components/UpdateTask";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import AdminProfile from "../components/AdminProfile";
 import { ThemeContext } from "../components/context/ThemeContext";
@@ -16,9 +17,10 @@ import { useState } from "react";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+const [page, setPage] = useState(location.state?.page || "dashboard");
   const { theme } = useContext(ThemeContext);
-  const [page, setPage] = useState("dashboard");
-
+  
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -64,23 +66,31 @@ const Dashboard = () => {
 
   return (
     <>
-   <div className={`card shadow-sm p-2 ${theme === "dark" ? "bg-dark text-white" : "bg-white text-dark"}`}>
-      <Navbar />
+      <div
+        className={`card shadow-sm ${theme === "dark" ? "bg-dark text-white" : "bg-white text-dark"}`}
+        style={{ border: "none", borderRadius: 0, overflow: "hidden" }}
+      >
+        <Navbar />
 
-      <div className="d-flex">
-        <Sidebar setPage={setPage} userRole={currentRole} theme={theme}/>
+        <div className="d-flex">
+          <Sidebar setPage={setPage} userRole={currentRole} theme={theme} />
 
-       
-        <div className="flex-grow-1 p-4" style={{ 
-            backgroundColor: theme === "dark" ? "#212529" : "#f8f9fa", 
-            minHeight: "90vh" 
-        }}>
-          {renderPage()}
+          <div
+            className="flex-grow-1 p-4"
+            style={{
+              background: theme === "dark"
+                ? "#1a1a1a"
+                : "linear-gradient(180deg, #faf5ff 0%, #fdf2f8 100%)",
+              minHeight: "90vh",
+            }}
+          >
+            {renderPage()}
+          </div>
         </div>
       </div>
-    </div>
     </>
   );
+
 };
 
 export default Dashboard;

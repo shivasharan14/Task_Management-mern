@@ -17,13 +17,11 @@ const Navbar = () => {
     try {
       const token = localStorage.getItem("token");
 
-      // ❌ No token → redirect
       if (!token) {
         navigate("/");
         return;
       }
 
-      // ✅ Safe JWT decode
       let payload;
       try {
         payload = JSON.parse(atob(token.split(".")[1]));
@@ -33,16 +31,15 @@ const Navbar = () => {
         return;
       }
 
-      // ✅ API call
       const res = await getUserInfo(payload.id);
-      console.log(res)
+      console.log(res);
 
-     if (res && res.name) { // रिस्पॉन्समध्ये 'name' आहे का ते तपासा
-  setUser(res);       // थेट 'res' सेट करा
-} else {
-  localStorage.removeItem("token");
-  navigate("/");
-}
+      if (res && res.name) {
+        setUser(res);
+      } else {
+        localStorage.removeItem("token");
+        navigate("/");
+      }
     } catch (error) {
       console.log(error);
       localStorage.removeItem("token");
@@ -56,45 +53,95 @@ const Navbar = () => {
   };
 
   return (
-  <nav className={`navbar navbar-expand-lg ${theme === "dark" ? "navbar-dark bg-dark" : "navbar-light bg-white"}`} 
-     style={{ borderBottom: theme === "dark" ? "2px solid #444" : "2px solid #dee2e6",borderTop: theme === "dark" ? "1px solid #444" : "2px solid #dee2e6",
-      borderRight: theme === "dark" ? "1px solid #444" : "1px solid #dee2e6",
-      borderLeft: theme === "dark" ? "1px solid #444" : "1px solid #dee2e6"
-      }}>
-  <div className="container">
-    {/* Brand */}
-    <span className="navbar-brand">Task Management</span>
+   <nav
+      className={`navbar navbar-expand-lg ${theme === "dark" ? "navbar-dark" : "navbar-light"}`}
+      style={{
+        background: theme === "dark"
+          ? "linear-gradient(90deg, #1a0b2e, #2d1250)"
+          : "linear-gradient(90deg, #fdf4ff, #fff0f8, #fff7ed)",
+        borderBottom: "3px solid transparent",
+        borderImage: "linear-gradient(90deg, #7b2ff7, #f107a3, #ff8a3d) 1",
+        boxShadow: "0 4px 20px rgba(123,47,247,0.10)",
+        padding: "0.9rem 0",
+        backdropFilter: "blur(8px)",
+      }}
+    >
+      <div className="container">
+        {/* Brand */}
+        <span
+          className="navbar-brand d-flex align-items-center"
+          style={{ gap: "6px" }}
+        >
+          <span style={{ fontSize: "1.5rem" }}>🌸</span>
+          <span
+            style={{
+              background: "linear-gradient(90deg, #7b2ff7, #f107a3)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              fontWeight: 800,
+              fontSize: "1.3rem",
+            }}
+          >
+            TaskBloom
+          </span>
+        </span>
 
-    {/* Right side */}
-    <div className="d-flex align-items-center">
-      {user?.profile && (
-        <img
-          src={`${import.meta.env.VITE_API_URL}/uploads/users/${user.profile}`}
-          alt="Profile"
-          width="40"
-          height="40"
-          className="rounded-circle me-2"
-        />
-      )}
+        {/* Right side */}
+        <div className="d-flex align-items-center">
+          {user?.profile && (
+            <img
+              src={`${import.meta.env.VITE_API_URL}/uploads/users/${user.profile}`}
+              alt="Profile"
+              width="38"
+              height="38"
+              className="rounded-circle me-2"
+              style={{
+                border: "2px solid #f107a3",
+                objectFit: "cover",
+              }}
+            />
+          )}
 
-     
-      <span className="navbar-text me-3">
-        Welcome, {user?.name || "User"}
-      </span>
+          <span
+            className="navbar-text me-3 d-none d-sm-inline"
+            style={{ fontWeight: 500 }}
+          >
+            Welcome, <strong>{user?.name || "User"}</strong>
+          </span>
 
-      <button 
-        onClick={toggleTheme} 
-        className={`btn btn-sm ${theme === "dark" ? "btn-outline-light" : "btn-outline-dark"} me-2`}
-      >
-        {theme === "light" ? "☀️ Light" : "🌙 Dark"} 
-      </button>
+          <button
+            onClick={toggleTheme}
+            className="btn btn-sm me-2"
+            style={{
+              borderRadius: "20px",
+              border: theme === "dark" ? "1.5px solid #555" : "1.5px solid #ddd",
+              background: "transparent",
+              color: theme === "dark" ? "#fff" : "#333",
+              fontWeight: 500,
+              padding: "6px 14px",
+            }}
+          >
+            {theme === "light" ? "☀️ Light" : "🌙 Dark"}
+          </button>
 
-      <button className="btn btn-danger btn-sm" onClick={handleLogout}>
-        Logout
-      </button>
-    </div>
-  </div>
-</nav>
+          <button
+            className="btn btn-sm"
+            style={{
+              background: "linear-gradient(90deg, #7b2ff7, #f107a3)",
+              color: "#fff",
+              border: "none",
+              fontWeight: 600,
+              borderRadius: "20px",
+              padding: "6px 16px",
+              boxShadow: "0 4px 12px rgba(241,7,163,0.3)",
+            }}
+            onClick={handleLogout}
+          >
+            <i className="bi bi-box-arrow-right me-1"></i> Logout
+          </button>
+        </div>
+      </div>
+    </nav>
   );
 };
 

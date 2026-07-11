@@ -200,23 +200,27 @@ const AllTasks = () => {
   };
 
   return (
-    <div className="card shadow position-relative">
-      <div className="card-body">
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <h2 className="m-0">
-            {userRole === "admin" ? "All Tasks" : "My Assigned Tasks"}
+    <div className="card tasks-card position-relative">
+      <div className="card-body p-4">
+        <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+          <h2 className="m-0 fw-bold" style={{
+            background: "linear-gradient(90deg, #7b2ff7, #f107a3)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}>
+            {userRole === "admin" ? "🗂️ All Tasks" : "📝 My Assigned Tasks"}
           </h2>
-          <div className="d-flex gap-2">
+          <div className="d-flex gap-2 flex-wrap">
             <input
               type="text"
-              className="form-control form-control-sm"
+              className="form-control form-control-sm bloom-filter-input"
               style={{ width: "200px" }}
-              placeholder="Search task..."
+              placeholder="🔍 Search task..."
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
             />
             <select
-              className="form-select form-select-sm"
+              className="form-select form-select-sm bloom-filter-input"
               style={{ width: "180px" }}
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
@@ -228,7 +232,7 @@ const AllTasks = () => {
             </select>
 
             <select
-              className="form-select form-select-sm"
+              className="form-select form-select-sm bloom-filter-input"
               style={{ width: "140px" }}
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
@@ -241,7 +245,7 @@ const AllTasks = () => {
             {userRole === "admin" && (
               <>
                 <select
-                  className="form-select form-select-sm"
+                  className="form-select form-select-sm bloom-filter-input"
                   style={{ width: "160px" }}
                   value={selectedMonth}
                   onChange={(e) => setSelectedMonth(e.target.value)}
@@ -261,7 +265,7 @@ const AllTasks = () => {
                   <option value="12">December</option>
                 </select>
                 <select
-                  className="form-select form-select-sm"
+                  className="form-select form-select-sm bloom-filter-input"
                   style={{ width: "90px" }}
                   value={selectedYear}
                   onChange={(e) => setSelectedYear(e.target.value)}
@@ -275,100 +279,102 @@ const AllTasks = () => {
         </div>
 
         {userRole === "admin" ? (
-          <table className="table table-bordered table-striped align-middle">
-            <thead className="table-dark">
-              <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredTasks.length > 0 ? (
-                filteredTasks.map((task, index) => (
-                  <tr key={task.id || task._id || index}>
-                    <td>{index + 1}</td>
-                    <td
-                      className="fw-bold text-primary"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleOpenDetails(task)}
-                    >
-                     {highlightText(task.title, searchText)}
-                    </td>
-                    <td>{task.description}</td>
-                    <td>
-                      {task.startdate?.split("T")[0] ||
-                        task.startDate?.split("T")[0]}
-                    </td>
-                    <td>
-                      {task.enddate?.split("T")[0] ||
-                        task.endDate?.split("T")[0]}
-                    </td>
-                    <td>
-                      {task.status?.toLowerCase() === "completed" ? (
-                        <span className="badge bg-success px-2 py-1.5">
-                          Completed
-                        </span>
-                      ) : task.status?.toLowerCase() === "inprogress" ||
-                        task.status?.toLowerCase() === "in progress" ? (
-                        <span className="badge bg-info px-2 py-1.5">
-                          In Progress
-                        </span>
-                      ) : (
-                        <span className="badge bg-warning text-dark px-2 py-1.5">
-                          Pending
-                        </span>
-                      )}
-                    </td>
-                    <td>
-                      <div
-                        className="d-flex align-items-center justify-content-center gap-3"
-                        style={{ fontSize: "18px" }}
+          <div className="table-responsive">
+            <table className="table table-hover align-middle mb-0 bloom-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Status</th>
+                  <th className="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredTasks.length > 0 ? (
+                  filteredTasks.map((task, index) => (
+                    <tr key={task.id || task._id || index}>
+                      <td>{index + 1}</td>
+                      <td
+                        className="fw-bold"
+                        style={{ cursor: "pointer", color: "#7b2ff7" }}
+                        onClick={() => handleOpenDetails(task)}
                       >
-                        <span
-                          className="text-primary"
-                          style={{ cursor: "pointer" }}
-                          onClick={() =>
-                            handleOpenAssignModal(task.id || task._id)
-                          }
+                        {highlightText(task.title, searchText)}
+                      </td>
+                      <td>{task.description}</td>
+                      <td>
+                        {task.startdate?.split("T")[0] ||
+                          task.startDate?.split("T")[0]}
+                      </td>
+                      <td>
+                        {task.enddate?.split("T")[0] ||
+                          task.endDate?.split("T")[0]}
+                      </td>
+                      <td>
+                        {task.status?.toLowerCase() === "completed" ? (
+                          <span className="badge px-3 py-2 rounded-pill badge-bloom-done">
+                            Completed
+                          </span>
+                        ) : task.status?.toLowerCase() === "inprogress" ||
+                          task.status?.toLowerCase() === "in progress" ? (
+                          <span className="badge px-3 py-2 rounded-pill badge-bloom-progress">
+                            In Progress
+                          </span>
+                        ) : (
+                          <span className="badge px-3 py-2 rounded-pill badge-bloom-pending">
+                            Pending
+                          </span>
+                        )}
+                      </td>
+                      <td>
+                        <div
+                          className="d-flex align-items-center justify-content-center gap-3"
+                          style={{ fontSize: "18px" }}
                         >
-                          <i className="bi bi-person-plus-fill"></i>
-                        </span>
-                        <span
-                          className="text-warning"
-                          style={{ cursor: "pointer" }}
-                          onClick={() =>
-                            navigate(
-                              `/dashboard/task/update/${task.id || task._id}`,
-                            )
-                          }
-                        >
-                          <i className="bi bi-pencil-square"></i>
-                        </span>
-                        <span
-                          className="text-danger"
-                          style={{ cursor: "pointer" }}
-                          onClick={() => handleDelete(task.id || task._id)}
-                        >
-                          <i className="bi bi-trash3-fill"></i>
-                        </span>
-                      </div>
+                          <span
+                            className="bloom-icon-btn"
+                            style={{ cursor: "pointer", color: "#7b2ff7" }}
+                            onClick={() =>
+                              handleOpenAssignModal(task.id || task._id)
+                            }
+                          >
+                            <i className="bi bi-person-plus-fill"></i>
+                          </span>
+                          <span
+                            className="bloom-icon-btn"
+                            style={{ cursor: "pointer", color: "#ff8a3d" }}
+                            onClick={() =>
+                              navigate(
+                                `/dashboard/task/update/${task.id || task._id}`,
+                              )
+                            }
+                          >
+                            <i className="bi bi-pencil-square"></i>
+                          </span>
+                          <span
+                            className="bloom-icon-btn"
+                            style={{ cursor: "pointer", color: "#dc3545" }}
+                            onClick={() => handleDelete(task.id || task._id)}
+                          >
+                            <i className="bi bi-trash3-fill"></i>
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" className="text-center text-muted py-4">
+                      No Tasks Found! ❌
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="7" className="text-center text-muted py-4">
-                    No Tasks Found! ❌
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                )}
+              </tbody>
+            </table>
+          </div>
         ) : (
           <div className="row g-3">
             {filteredTasks.length > 0 ? (
@@ -377,18 +383,22 @@ const AllTasks = () => {
                   className="col-12 col-md-6 col-lg-4"
                   key={task.id || task._id || index}
                 >
-                  <div className="card h-100 border-0 shadow-sm border-top border-4 border-info">
+                  <div className="card h-100 task-mini-card">
                     <div className="card-body">
                       <div className="d-flex justify-content-between align-items-start mb-2">
                         <h5
-                          className="card-title fw-bold text-dark mb-0 text-primary"
-                          style={{ cursor: "pointer" }}
+                          className="card-title fw-bold mb-0"
+                          style={{ cursor: "pointer", color: "#7b2ff7" }}
                           onClick={() => handleOpenDetails(task)}
                         >
                           {highlightText(task.title, searchText)}
                         </h5>
                         <span
-                          className={`badge ${task.status?.toLowerCase() === "completed" ? "bg-success" : task.status?.toLowerCase() === "inprogress" || task.status?.toLowerCase() === "in progress" ? "bg-info" : "bg-warning text-dark"}`}
+                          className={`badge rounded-pill px-2 py-1 ${
+                            task.status?.toLowerCase() === "completed" ? "badge-bloom-done" :
+                            task.status?.toLowerCase() === "inprogress" || task.status?.toLowerCase() === "in progress" ? "badge-bloom-progress" :
+                            "badge-bloom-pending"
+                          }`}
                         >
                           {task.status}
                         </span>
@@ -399,7 +409,9 @@ const AllTasks = () => {
                       >
                         {task.description}
                       </p>
-                      <div className="row g-2 mb-3 bg-light p-2 rounded small text-secondary">
+                      <div className="row g-2 mb-3 p-2 rounded small text-secondary" style={{
+                        background: "linear-gradient(90deg, rgba(123,47,247,0.06), rgba(241,7,163,0.06))"
+                      }}>
                         <div className="col-6">
                           <i className="bi bi-calendar-event me-1"></i> Start:{" "}
                           {task.startdate?.split("T")[0] ||
@@ -413,16 +425,16 @@ const AllTasks = () => {
                             "N/A"}
                         </div>
                       </div>
-                      <div className="mt-3 border-top pt-2">
+                      <div className="mt-3 pt-2" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
                         <label
-                          className="form-label text-xs fw-bold text-secondary mb-1"
+                          className="fw-bold text-secondary mb-1 d-block"
                           style={{ fontSize: "12px" }}
                         >
                           Update My Status:
                         </label>
 
                         <select
-                          className="form-select form-select-sm"
+                          className="form-select form-select-sm bloom-filter-input"
                           value={
                             task.status
                               ? task.status.charAt(0).toUpperCase() +
@@ -453,6 +465,7 @@ const AllTasks = () => {
           </div>
         )}
       </div>
+
       {showModal && (
         <div
           className="modal show d-block"
@@ -460,8 +473,8 @@ const AllTasks = () => {
           tabIndex="-1"
         >
           <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content shadow-lg">
-              <div className="modal-header bg-primary text-white">
+            <div className="modal-content shadow-lg" style={{ borderRadius: "18px", overflow: "hidden", border: "none" }}>
+              <div className="modal-header bloom-modal-header text-white">
                 <h5 className="modal-title">Assign Task to Member</h5>
                 <button
                   type="button"
@@ -474,7 +487,7 @@ const AllTasks = () => {
                   Select Team Members:
                 </label>
                 <div
-                  className="border rounded p-3"
+                  className="border rounded-3 p-3"
                   style={{ maxHeight: "200px", overflowY: "auto" }}
                 >
                   {users && users.length > 0 ? (
@@ -526,14 +539,14 @@ const AllTasks = () => {
               <div className="modal-footer">
                 <button
                   type="button"
-                  className="btn btn-secondary fw-bold"
+                  className="btn btn-light fw-bold"
                   onClick={() => setShowModal(false)}
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  className="btn btn-success fw-bold"
+                  className="btn btn-bloom fw-bold"
                   onClick={handleAssignSubmit}
                 >
                   Save Assignment
@@ -550,8 +563,8 @@ const AllTasks = () => {
           style={{ backgroundColor: "rgba(0,0,0,0.5)", zIndex: 2000 }}
         >
           <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content shadow-lg">
-              <div className="modal-header bg-primary text-white">
+            <div className="modal-content shadow-lg" style={{ borderRadius: "18px", overflow: "hidden", border: "none" }}>
+              <div className="modal-header bloom-modal-header text-white">
                 <h5 className="modal-title">Task Details</h5>
                 <button
                   className="btn-close btn-close-white"
@@ -560,7 +573,7 @@ const AllTasks = () => {
               </div>
 
               <div className="modal-body">
-                <h4 className="text-primary mb-3">{selectedTask.title}</h4>
+                <h4 className="mb-3" style={{ color: "#7b2ff7" }}>{selectedTask.title}</h4>
 
                 <p>
                   <b>Description:</b> {selectedTask.description}
@@ -584,7 +597,7 @@ const AllTasks = () => {
 
               <div className="modal-footer">
                 <button
-                  className="btn btn-secondary"
+                  className="btn btn-light"
                   onClick={() => setShowDetailsModal(false)}
                 >
                   Close

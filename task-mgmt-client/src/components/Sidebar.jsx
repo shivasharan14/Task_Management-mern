@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-const Sidebar = ({ setPage ,theme }) => {
+const Sidebar = ({ setPage, theme }) => {
   const navigate = useNavigate();
   const [role, setRole] = useState("");
+  const [activePage, setActivePage] = useState("dashboard");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -27,6 +28,11 @@ const Sidebar = ({ setPage ,theme }) => {
     navigate("/");
   };
 
+  const handleMenuClick = (page) => {
+    setActivePage(page);
+    setPage(page);
+  };
+
   const userMenus = [
     { title: "Dashboard", page: "dashboard", icon: "📊" },
     { title: "All Tasks", page: "tasks", icon: "📝" },
@@ -37,62 +43,96 @@ const Sidebar = ({ setPage ,theme }) => {
     { title: "Dashboard", page: "dashboard", icon: "📊" },
     { title: "All Tasks", page: "tasks", icon: "📝" },
     { title: "Create Task", page: "create", icon: "➕" },
-    
     { title: "Profile", page: "profile", icon: "👤" },
   ];
 
   const menus = role === "admin" ? adminMenus : userMenus;
-  const sidebarClass = theme === "dark" ? "bg-dark text-white" : "bg-light text-dark";
-
-  // तुझा कोड जसा आहे तसाच राहू दे, फक्त हा 'return' चा भाग असा कर:
 
   return (
-   <div
-  className={`${sidebarClass} d-flex flex-column`}
-  style={{
-    width: "260px",
-    minHeight: "100vh",
-    // राखाडी टोन आणि शेडोचा वापर करून गहराई (Depth) निर्माण केली आहे
-    backgroundColor: theme === "dark" ? "#1a1a1a" : "#ffffff",
-    borderRight: theme === "dark" ? "1px solid #333" : "1px solid #e0e0e0",
-    boxShadow: "2px 0 10px rgba(0,0,0,0.08)", // थोडी जास्त शेडो
-    zIndex: 1000,
-    transition: "all 0.3s ease" // स्मूथ ट्रान्झिशन
-  }}
->
-      <div className="p-3 border-bottom">
-        <h4 className="text-center m-0">Task Management</h4>
+    <div
+      className="d-flex flex-column"
+      style={{
+        width: "260px",
+        minHeight: "100vh",
+        background: theme === "dark"
+          ? "#151515"
+          : "linear-gradient(180deg, #1a0b2e 0%, #3b0764 45%, #7b2ff7 100%)",
+        boxShadow: "2px 0 16px rgba(0,0,0,0.15)",
+        zIndex: 1000,
+        transition: "all 0.3s ease",
+      }}
+    >
+      <div className="p-4 text-center" style={{ borderBottom: "1px solid rgba(255,255,255,0.12)" }}>
+        
+        <h5 className="m-0 mt-2" style={{ color: "#fff", fontWeight: 800, letterSpacing: "-0.3px" }}>
+          TaskBloom
+        </h5>
       </div>
 
-      <ul className="nav flex-column p-3">
-  {menus.map((menu) => (
-    <li key={menu.page} className="nav-item mb-2">
-      <button
-        // इथे btn-outline-... वापरल्यामुळे बॉर्डर आपोआप येईल
-        className={`btn ${
-          theme === "dark" 
-            ? "btn-outline-secondary" 
-            : "btn-outline-dark"
-        } text-start w-100`}
-        onClick={() => setPage(menu.page)}
-        style={{ borderRadius: "6px" }} // थोडी गोलाकार बॉर्डर दिली तर अधिक छान दिसेल
-      >
-        {menu.icon} {menu.title}
-      </button>
-    </li>
-  ))}
-</ul>
+      <ul className="nav flex-column p-3" style={{ gap: "6px" }}>
+        {menus.map((menu) => {
+          const isActive = activePage === menu.page;
+          return (
+            <li key={menu.page} className="nav-item mb-1">
+              <button
+                className="btn text-start w-100 d-flex align-items-center"
+                onClick={() => handleMenuClick(menu.page)}
+                style={{
+                  borderRadius: "10px",
+                  padding: "10px 14px",
+                  gap: "10px",
+                  fontWeight: 600,
+                  border: "none",
+                  color: isActive ? "#fff" : "rgba(255,255,255,0.75)",
+                  background: isActive
+                    ? "linear-gradient(90deg, #f107a3, #ff8a3d)"
+                    : "transparent",
+                  boxShadow: isActive ? "0 6px 16px rgba(241,7,163,0.35)" : "none",
+                  transition: "all 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive) e.currentTarget.style.background = "rgba(255,255,255,0.08)";
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) e.currentTarget.style.background = "transparent";
+                }}
+              >
+                <span style={{ fontSize: "1.1rem" }}>{menu.icon}</span>
+                {menu.title}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
 
-      <div className="mt-auto p-3 border-top">
-        <small className={theme === "dark" ? "text-info" : "text-primary"}>
-          Role : {role}
-        </small>
+      <div className="mt-auto p-3" style={{ borderTop: "1px solid rgba(255,255,255,0.12)" }}>
+        <div
+          className="mb-3 px-2 py-2 text-center"
+          style={{
+            borderRadius: "10px",
+            background: "rgba(255,255,255,0.08)",
+            color: "#fff",
+            fontSize: "0.8rem",
+            fontWeight: 600,
+            textTransform: "capitalize",
+          }}
+        >
+          Role: {role || "user"}
+        </div>
 
         <button
-          className="btn btn-danger w-100 mt-3"
+          className="btn w-100"
           onClick={handleLogout}
+          style={{
+            borderRadius: "10px",
+            border: "1.5px solid rgba(255,255,255,0.25)",
+            background: "transparent",
+            color: "#fff",
+            fontWeight: 600,
+            padding: "9px 0",
+          }}
         >
-          Logout
+          <i className="bi bi-box-arrow-right me-1"></i> Logout
         </button>
       </div>
     </div>

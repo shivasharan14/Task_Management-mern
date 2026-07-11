@@ -97,3 +97,236 @@ body {
 .navbar img:hover {
   transform: scale(1.05); 
 }
+
+
+
+/* ===================== TASKBLOOM BRAND THEME ===================== */
+
+.auth-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #7b2ff7 0%, #f107a3 50%, #ff8a3d 100%);
+  background-size: 200% 200%;
+  animation: bloomGradient 12s ease infinite;
+  padding: 24px;
+}
+
+@keyframes bloomGradient {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.brand-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.brand-header .brand-logo {
+  font-size: 2.75rem;
+  line-height: 1;
+  display: inline-block;
+  animation: bloomFloat 3s ease-in-out infinite;
+}
+
+.brand-header .brand-name {
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 800;
+  font-size: 2rem;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  margin-top: 6px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+.brand-header .brand-tagline {
+  color: rgba(255,255,255,0.9);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+@keyframes bloomFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+.auth-card {
+  background: var(--card-bg) !important;
+  border: none !important;
+  border-radius: 24px !important;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25) !important;
+  padding: 2.5rem !important;
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-card h2 {
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.auth-card label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-color);
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+
+.auth-card .form-control {
+  border-radius: 12px;
+  border: 1.5px solid rgba(0,0,0,0.1);
+  padding: 10px 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-card .form-control:focus {
+  border-color: #f107a3;
+  box-shadow: 0 0 0 4px rgba(241, 7, 163, 0.12);
+}
+
+.btn-bloom {
+  background: linear-gradient(90deg, #7b2ff7, #f107a3);
+  border: none;
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 12px;
+  padding: 10px 0;
+  letter-spacing: 0.3px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 8px 20px rgba(241, 7, 163, 0.35);
+}
+
+.btn-bloom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(241, 7, 163, 0.45);
+  color: #ffffff;
+}
+
+.auth-card a {
+  color: #f107a3;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-card a:hover {
+  text-decoration: underline;
+}
+
+
+
+/* Dashboard stat cards */
+.stat-card {
+  border: none !important;
+  border-radius: 18px !important;
+  padding: 1.4rem 1.2rem;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 34px rgba(0,0,0,0.18);
+}
+
+.stat-card .stat-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  opacity: 0.9;
+}
+
+.stat-card .stat-value {
+  font-size: 2.1rem;
+  font-weight: 800;
+  margin-top: 4px;
+}
+
+.stat-card .stat-icon {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  font-size: 2.4rem;
+  opacity: 0.35;
+}
+
+.stat-card.stat-total   { background: linear-gradient(135deg, #7b2ff7, #b06ffb); }
+.stat-card.stat-done    { background: linear-gradient(135deg, #11998e, #38ef7d); }
+.stat-card.stat-progress{ background: linear-gradient(135deg, #2193b0, #6dd5ed); }
+.stat-card.stat-pending { background: linear-gradient(135deg, #f7971e, #ffd200); }
+
+/* Task table card */
+.bloom-table-card {
+  border: none !important;
+  border-radius: 20px !important;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08) !important;
+}
+
+.bloom-table thead th {
+  border: none;
+  background: linear-gradient(90deg, rgba(123,47,247,0.08), rgba(241,7,163,0.08));
+  color: #6b21a8;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-weight: 700;
+}
+
+.bloom-table td {
+  border-color: rgba(0,0,0,0.05);
+}
+
+.badge-bloom-done     { background: linear-gradient(90deg, #11998e, #38ef7d); color: #fff; }
+.badge-bloom-progress { background: linear-gradient(90deg, #2193b0, #6dd5ed); color: #fff; }
+.badge-bloom-pending  { background: linear-gradient(90deg, #f7971e, #ffd200); color: #212529; }
+
+/* AllTasks page styling */
+.tasks-card {
+  border: none !important;
+  border-radius: 20px !important;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.08) !important;
+}
+
+.bloom-filter-input {
+  border-radius: 10px !important;
+  border: 1.5px solid rgba(0,0,0,0.1) !important;
+}
+
+.bloom-filter-input:focus {
+  border-color: #f107a3 !important;
+  box-shadow: 0 0 0 3px rgba(241,7,163,0.12) !important;
+}
+
+.task-mini-card {
+  border: none !important;
+  border-radius: 16px !important;
+  border-top: 4px solid transparent !important;
+  border-image: linear-gradient(90deg, #7b2ff7, #f107a3) 1 !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.task-mini-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.13);
+}
+
+.bloom-modal-header {
+  background: linear-gradient(90deg, #7b2ff7, #f107a3) !important;
+  border: none !important;
+}
+
+.bloom-icon-btn {
+  transition: transform 0.15s ease;
+}
+.bloom-icon-btn:hover {
+  transform: scale(1.15);
+}

@@ -39,18 +39,24 @@ const CreateTask = () => {
   };
 
   return (
-    <div className="card shadow">
-      <div className="card-body">
-        <h2 className="mb-4">Create Task</h2>
+    <div className="card tasks-card" style={{ maxWidth: "600px" }}>
+      <div className="card-body p-4">
+        <h2 className="mb-4 fw-bold" style={{
+          background: "linear-gradient(90deg, #7b2ff7, #f107a3)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}>
+          ➕ Create Task
+        </h2>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label className="form-label">Title</label>
-
+            <label className="form-label fw-semibold">Title</label>
             <input
               type="text"
               name="title"
-              className="form-control"
+              className="form-control bloom-filter-input"
+              placeholder="e.g. Design homepage mockup"
               value={formData.title}
               onChange={handleChange}
               required
@@ -58,46 +64,46 @@ const CreateTask = () => {
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Description</label>
-
+            <label className="form-label fw-semibold">Description</label>
             <textarea
               name="description"
-              className="form-control"
+              className="form-control bloom-filter-input"
               rows="3"
+              placeholder="Add task details..."
               value={formData.description}
               onChange={handleChange}
               required
             ></textarea>
           </div>
 
-          <div className="mb-3">
-            <label className="form-label">Start Date</label>
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label className="form-label fw-semibold">Start Date</label>
+              <input
+                type="date"
+                name="startdate"
+                className="form-control bloom-filter-input"
+                value={formData.startdate}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-            <input
-              type="date"
-              name="startdate"
-              className="form-control"
-              value={formData.startdate}
-              onChange={handleChange}
-              required
-            />
+            <div className="col-md-6 mb-3">
+              <label className="form-label fw-semibold">End Date</label>
+              <input
+                type="date"
+                name="enddate"
+                className="form-control bloom-filter-input"
+                value={formData.enddate}
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
 
-          <div className="mb-3">
-            <label className="form-label">End Date</label>
-
-            <input
-              type="date"
-              name="enddate"
-              className="form-control"
-              value={formData.enddate}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <button type="submit" className="btn btn-primary">
-            Create Task
+          <button type="submit" className="btn btn-bloom fw-bold px-4 mt-2">
+            <i className="bi bi-check2-circle me-2"></i>Create Task
           </button>
         </form>
       </div>

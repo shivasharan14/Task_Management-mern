@@ -70,86 +70,64 @@ const UserDashboard = () => {
     );
   }
 
-  return (
+ return (
     <div className="container-fluid px-4 py-3">
-      
+
       {/* हेडर */}
       <div className="mb-4">
-        <h2 className="fw-bold text-dark m-0">User Dashboard</h2>
+        <h2 className="fw-bold m-0" style={{
+          background: "linear-gradient(90deg, #7b2ff7, #f107a3)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}>
+          🌸 My Dashboard
+        </h2>
         <p className="text-muted m-0">Overview of tasks assigned to you.</p>
       </div>
 
       {/* 📊 ४ स्टॅट्स कार्ड्स */}
       <div className="row g-3 mb-4">
-        {/* Total Tasks */}
         <div className="col-12 col-sm-6 col-xl-3">
-          <div className="card shadow-sm border-0 border-start border-primary border-4 py-2">
-            <div className="card-body d-flex align-items-center justify-content-between">
-              <div>
-                <div className="text-xs font-weight-bold text-primary text-uppercase mb-1" style={{ fontSize: "11px" }}>My Total Tasks</div>
-                <div className="h2 mb-0 fw-bold text-dark">{stats.total}</div>
-              </div>
-              <div className="bg-primary bg-opacity-10 p-3 rounded-circle text-primary">
-                <i className="bi bi-folder fs-3"></i>
-              </div>
-            </div>
+          <div className="stat-card stat-total">
+            <div className="stat-label">My Total Tasks</div>
+            <div className="stat-value">{stats.total}</div>
+            <i className="bi bi-folder stat-icon"></i>
           </div>
         </div>
 
-        {/* Completed */}
         <div className="col-12 col-sm-6 col-xl-3">
-          <div className="card shadow-sm border-0 border-start border-success border-4 py-2">
-            <div className="card-body d-flex align-items-center justify-content-between">
-              <div>
-                <div className="text-xs font-weight-bold text-success text-uppercase mb-1" style={{ fontSize: "11px" }}>Completed</div>
-                <div className="h2 mb-0 fw-bold text-dark">{stats.completed}</div>
-              </div>
-              <div className="bg-success bg-opacity-10 p-3 rounded-circle text-success">
-                <i className="bi bi-check-circle fs-3"></i>
-              </div>
-            </div>
+          <div className="stat-card stat-done">
+            <div className="stat-label">Completed</div>
+            <div className="stat-value">{stats.completed}</div>
+            <i className="bi bi-check-circle stat-icon"></i>
           </div>
         </div>
 
-        {/* In Progress */}
         <div className="col-12 col-sm-6 col-xl-3">
-          <div className="card shadow-sm border-0 border-start border-info border-4 py-2">
-            <div className="card-body d-flex align-items-center justify-content-between">
-              <div>
-                <div className="text-xs font-weight-bold text-info text-uppercase mb-1" style={{ fontSize: "11px" }}>In Progress</div>
-                <div className="h2 mb-0 fw-bold text-dark">{stats.inProgress}</div>
-              </div>
-              <div className="bg-info bg-opacity-10 p-3 rounded-circle text-info">
-                <i className="bi bi-hourglass-split fs-3"></i>
-              </div>
-            </div>
+          <div className="stat-card stat-progress">
+            <div className="stat-label">In Progress</div>
+            <div className="stat-value">{stats.inProgress}</div>
+            <i className="bi bi-hourglass-split stat-icon"></i>
           </div>
         </div>
 
-        {/* Pending */}
         <div className="col-12 col-sm-6 col-xl-3">
-          <div className="card shadow-sm border-0 border-start border-warning border-4 py-2">
-            <div className="card-body d-flex align-items-center justify-content-between">
-              <div>
-                <div className="text-xs font-weight-bold text-warning text-uppercase mb-1" style={{ fontSize: "11px" }}>Pending</div>
-                <div className="h2 mb-0 fw-bold text-dark">{stats.pending}</div>
-              </div>
-              <div className="bg-warning bg-opacity-10 p-3 rounded-circle text-warning">
-                <i className="bi bi-clock fs-3"></i>
-              </div>
-            </div>
+          <div className="stat-card stat-pending">
+            <div className="stat-label">Pending</div>
+            <div className="stat-value">{stats.pending}</div>
+            <i className="bi bi-clock stat-icon"></i>
           </div>
         </div>
       </div>
 
       {/* 📋 टास्क लिस्ट टेबल */}
-      <div className="card shadow-sm border-0 p-4">
+      <div className="card bloom-table-card p-4">
         <h5 className="fw-bold text-dark mb-3">
-          <i className="bi bi-list-stars me-2 text-info"></i>My Recent Assigned Tasks
+          <i className="bi bi-list-stars me-2" style={{ color: "#f107a3" }}></i>My Recent Assigned Tasks
         </h5>
         <div className="table-responsive">
-          <table className="table table-hover align-middle mb-0">
-            <thead className="table-light">
+          <table className="table table-hover align-middle mb-0 bloom-table">
+            <thead>
               <tr>
                 <th>Title</th>
                 <th>End Date</th>
@@ -161,19 +139,20 @@ const UserDashboard = () => {
                 myTasks.map((task, i) => {
                   if (!task) return null;
 
+                  const statusKey = task.status?.toLowerCase().replace(/\s+/g, '');
+                  const badgeClass =
+                    statusKey === 'completed' ? 'badge-bloom-done' :
+                    statusKey === 'inprogress' ? 'badge-bloom-progress' :
+                    'badge-bloom-pending';
+
                   return (
                     <tr key={i}>
-                      {/* 💡 क्लीन टास्क ऑब्जेक्ट असल्यामुळे डायरेक्ट डेटा रेंडर होतोय */}
                       <td className="fw-bold text-secondary">{task.title}</td>
                       <td>
                         {task.endDate ? task.endDate.split("T")[0] : task.enddate ? task.enddate.split("T")[0] : "N/A"}
                       </td>
                       <td>
-                        <span className={`badge px-2 py-1.5 ${
-                          task.status?.toLowerCase().replace(/\s+/g, '') === 'completed' ? 'bg-success' : 
-                          task.status?.toLowerCase().replace(/\s+/g, '') === 'inprogress' ? 'bg-info' : 
-                          'bg-warning text-dark'
-                        }`}>
+                        <span className={`badge px-3 py-2 rounded-pill ${badgeClass}`}>
                           {task.status || "Pending"}
                         </span>
                       </td>
@@ -195,5 +174,7 @@ const UserDashboard = () => {
     </div>
   );
 };
+
+
 
 export default UserDashboard;
