@@ -110,3 +110,5 @@ const EditProfile = ({ adminData, onCancel, onSuccess }) => {
     </div>
   );
 };
+
+export default EditProfile
