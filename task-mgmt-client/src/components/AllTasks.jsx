@@ -8,12 +8,11 @@ import {
   getTasksByUserAPI,
   updatestatus,
 } from "../services/taskservices";
-import { useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import axios from "axios";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-const AllTasks = () => {
+const AllTasks = ({ setPage, onEditTask }) => {
   const [tasks, setTasks] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedYear, setSelectedYear] = useState("2026");
@@ -343,17 +342,13 @@ const AllTasks = () => {
                           >
                             <i className="bi bi-person-plus-fill"></i>
                           </span>
-                          <span
-                            className="bloom-icon-btn"
-                            style={{ cursor: "pointer", color: "#ff8a3d" }}
-                            onClick={() =>
-                              navigate(
-                                `/dashboard/task/update/${task.id || task._id}`,
-                              )
-                            }
-                          >
-                            <i className="bi bi-pencil-square"></i>
-                          </span>
+                         <span
+  className="bloom-icon-btn"
+  style={{ cursor: "pointer", color: "#ff8a3d" }}
+  onClick={() => onEditTask(task.id || task._id)}
+>
+  <i className="bi bi-pencil-square"></i>
+</span>
                           <span
                             className="bloom-icon-btn"
                             style={{ cursor: "pointer", color: "#dc3545" }}

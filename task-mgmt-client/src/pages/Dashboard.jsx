@@ -1,28 +1,24 @@
-
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 
-import AdminDashboard from "../components/AdminDashboard"; 
-import UserDashboard from "../components/UserDashboard"; 
+import AdminDashboard from "../components/AdminDashboard";
+import UserDashboard from "../components/UserDashboard";
 import AllTasks from "../components/AllTasks";
 import CreateTask from "../components/CreateTask";
 import UpdateTask from "../components/UpdateTask";
-import { useNavigate, useLocation } from "react-router-dom";
-
 import AdminProfile from "../components/AdminProfile";
 import { ThemeContext } from "../components/context/ThemeContext";
-import { useState } from "react";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-const [page, setPage] = useState(location.state?.page || "dashboard");
+  const [page, setPage] = useState("dashboard");
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
   const { theme } = useContext(ThemeContext);
-   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -30,15 +26,16 @@ const [page, setPage] = useState(location.state?.page || "dashboard");
     }
   }, [navigate]);
 
-  const themeClass = theme === "dark" ? "bg-dark text-light" : "bg-light text-dark";
-
- 
   const currentRole = localStorage.getItem("role")?.toLowerCase().trim() || "user";
+
+  const handleEditTask = (taskId) => {
+    setSelectedTaskId(taskId);
+    setPage("update");
+  };
 
   const renderPage = () => {
     switch (page) {
       case "dashboard":
-       
         if (currentRole === "admin") {
           return <AdminDashboard setPage={setPage} />;
         } else {
@@ -46,23 +43,19 @@ const [page, setPage] = useState(location.state?.page || "dashboard");
         }
 
       case "tasks":
-        return <AllTasks />;
+        return <AllTasks setPage={setPage} onEditTask={handleEditTask} />;
 
       case "create":
         return <CreateTask />;
 
       case "update":
-        return <UpdateTask />;
-      
+        return <UpdateTask taskId={selectedTaskId} setPage={setPage} />;
+
       case "profile":
         return <AdminProfile />;
 
       default:
-        return (
-          <div className="alert alert-danger">
-            Page Not Found
-          </div>
-        );
+        return <div className="alert alert-danger">Page Not Found</div>;
     }
   };
 

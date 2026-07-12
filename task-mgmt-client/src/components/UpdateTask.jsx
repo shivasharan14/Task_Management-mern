@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { getTaskById, updateTask } from "../services/taskservices";
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
 
-const UpdateTask = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-
+const UpdateTask = ({ taskId, setPage }) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -15,38 +11,30 @@ const UpdateTask = () => {
     status: "",
   });
 
-  // Fetch Task
-  
   const fetchTask = async () => {
     try {
-      const response = await getTaskById(id);
-      console.log("FETCHED TASK RESPONSE:", response); // 
-
-    
+      const response = await getTaskById(taskId);
       const taskData = response?.data?.gettask || response?.gettask;
 
       if (taskData) {
         setFormData({
           title: taskData.title || "",
           description: taskData.description || "",
-         
           startdate: taskData.startdate ? taskData.startdate.split("T")[0] : "",
           enddate: taskData.enddate ? taskData.enddate.split("T")[0] : "",
           status: taskData.status || "",
         });
-      } else {
-        console.log("Task data not found in response structure");
       }
     } catch (error) {
       console.log("Fetch Error:", error);
-      alert("Failed to fetch task data");
+      toast.error("Failed to fetch task data");
     }
   };
-  useEffect(() => {
-    fetchTask();
-  }, [id]);
 
-  // Handle Input Change
+  useEffect(() => {
+    if (taskId) fetchTask();
+  }, [taskId]);
+
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -54,21 +42,18 @@ const UpdateTask = () => {
     }));
   };
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await updateTask(id, formData);
-      console.log("UPDATE RESPONSE:", response); 
+      const response = await updateTask(taskId, formData);
 
-     
       const isSuccess = response?.success || response?.data?.success;
       const msg = response?.msg || response?.data?.msg || "Task Updated Successfully";
 
       if (isSuccess) {
         toast.success("Task Updated Successfully");
-        navigate("/all-tasks");
+        setPage("tasks");
       } else {
         toast.error(msg);
       }
@@ -168,7 +153,7 @@ const UpdateTask = () => {
                 borderRadius: "12px",
                 color: "#555",
               }}
-             onClick={() => navigate("/dashboard", { state: { page: "tasks" } })}
+              onClick={() => setPage("tasks")}
             >
               ← Back
             </button>
