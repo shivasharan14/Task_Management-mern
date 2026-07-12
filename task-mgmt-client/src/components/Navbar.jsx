@@ -4,7 +4,7 @@ import { getUserInfo } from "../services/userservices";
 import { useContext } from "react";
 import { ThemeContext } from "./context/ThemeContext";
 
-const Navbar = () => {
+const Navbar = ({ onMenuClick }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -68,6 +68,23 @@ const Navbar = () => {
     >
       <div className="container">
         {/* Brand */}
+
+        <button
+          className="btn hamburger-btn me-2"
+          onClick={onMenuClick}
+          style={{
+            border: "none",
+            background: "transparent",
+            fontSize: "1.4rem",
+            color: theme === "dark" ? "#fff" : "#7b2ff7",
+          }}
+        >
+          <i className="bi bi-list"></i>
+        </button>
+
+        {/* Brand */}
+
+
         <span
           className="navbar-brand d-flex align-items-center"
           style={{ gap: "6px" }}

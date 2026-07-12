@@ -20,6 +20,8 @@ const Dashboard = () => {
   const location = useLocation();
 const [page, setPage] = useState(location.state?.page || "dashboard");
   const { theme } = useContext(ThemeContext);
+   const [sidebarOpen, setSidebarOpen] = useState(false);
+
   
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -70,10 +72,20 @@ const [page, setPage] = useState(location.state?.page || "dashboard");
         className={`card shadow-sm ${theme === "dark" ? "bg-dark text-white" : "bg-white text-dark"}`}
         style={{ border: "none", borderRadius: 0, overflow: "hidden" }}
       >
-        <Navbar />
+        <Navbar onMenuClick={() => setSidebarOpen(true)} />
 
-        <div className="d-flex">
-          <Sidebar setPage={setPage} userRole={currentRole} theme={theme} />
+        <div className="d-flex position-relative">
+          {sidebarOpen && (
+            <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)}></div>
+          )}
+
+          <Sidebar
+            setPage={setPage}
+            userRole={currentRole}
+            theme={theme}
+            isOpen={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
+          />
 
           <div
             className="flex-grow-1 p-4"
@@ -90,7 +102,6 @@ const [page, setPage] = useState(location.state?.page || "dashboard");
       </div>
     </>
   );
-
 };
 
 export default Dashboard;

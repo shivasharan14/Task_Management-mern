@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-const Sidebar = ({ setPage, theme }) => {
+const Sidebar = ({ setPage, theme, isOpen, onClose }) => {
   const navigate = useNavigate();
   const [role, setRole] = useState("");
   const [activePage, setActivePage] = useState("dashboard");
@@ -50,9 +50,8 @@ const Sidebar = ({ setPage, theme }) => {
 
   return (
     <div
-      className="d-flex flex-column"
+      className={`d-flex flex-column bloom-sidebar ${isOpen ? "sidebar-open" : ""}`}
       style={{
-        width: "260px",
         minHeight: "100vh",
         background: theme === "dark"
           ? "#151515"
@@ -62,13 +61,21 @@ const Sidebar = ({ setPage, theme }) => {
         transition: "all 0.3s ease",
       }}
     >
-      <div className="p-4 text-center" style={{ borderBottom: "1px solid rgba(255,255,255,0.12)" }}>
-        
+      <div className="p-4 text-center position-relative" style={{ borderBottom: "1px solid rgba(255,255,255,0.12)" }}>
+        <button
+          className="sidebar-close-btn position-absolute"
+          onClick={onClose}
+          style={{
+            top: "12px", right: "12px", border: "none", background: "transparent",
+            color: "#fff", fontSize: "1.3rem",
+          }}
+        >
+          <i className="bi bi-x-lg"></i>
+        </button>
         <h5 className="m-0 mt-2" style={{ color: "#fff", fontWeight: 800, letterSpacing: "-0.3px" }}>
           TaskBloom
         </h5>
       </div>
-
       <ul className="nav flex-column p-3" style={{ gap: "6px" }}>
         {menus.map((menu) => {
           const isActive = activePage === menu.page;

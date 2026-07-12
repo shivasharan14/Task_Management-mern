@@ -48,15 +48,7 @@ const EditProfile = ({ adminData, onCancel, onSuccess }) => {
         ✏️ Edit Profile
       </h3>
       <form onSubmit={handleUpdate}>
-        {/* Name Field */}
-        <div className="mb-3">
-          <label className="form-label fw-semibold">Full Name</label>
-          <input
-            className="form-control bloom-filter-input"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          />
-        </div>
+       
 
         {/* Email Field */}
         <div className="mb-3">
