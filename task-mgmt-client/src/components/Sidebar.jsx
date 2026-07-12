@@ -57,7 +57,7 @@ const Sidebar = ({ setPage, theme, isOpen, onClose }) => {
           ? "#151515"
           : "linear-gradient(180deg, #1a0b2e 0%, #3b0764 45%, #7b2ff7 100%)",
         boxShadow: "2px 0 16px rgba(0,0,0,0.15)",
-        zIndex: 1000,
+        zIndex: 1050,
         transition: "all 0.3s ease",
       }}
     >
