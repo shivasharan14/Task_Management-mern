@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { getUserInfo } from "../services/userservices";
 import EditProfile from "./EditProfile";
+import ChangePassword from "./ChangePassword";
 
 const AdminProfile = () => {
   const [adminData, setAdminData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showEdit, setShowEdit] = useState(false); // हे एडिट मोडसाठी
+  const [showEdit, setShowEdit] = useState(false);
+  const [showChangePassword, setShowChangePassword] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -13,9 +15,9 @@ const AdminProfile = () => {
         const token = localStorage.getItem("token");
         if (!token) return;
         const payload = JSON.parse(atob(token.split(".")[1]));
-        const userId = payload.id || payload._id; 
+        const userId = payload.id || payload._id;
         const data = await getUserInfo(userId);
-        setAdminData(data); 
+        setAdminData(data);
       } catch (error) {
         console.error("Error fetching user info:", error);
       } finally {
@@ -28,7 +30,7 @@ const AdminProfile = () => {
   if (loading) return <div className="text-center mt-5">Loading Profile...</div>;
   if (!adminData) return <div className="text-center mt-5">User data not found.</div>;
 
- return (
+  return (
     <div className="container mt-2">
       {showEdit ? (
         <EditProfile
@@ -123,6 +125,7 @@ const AdminProfile = () => {
                     color: "#555",
                     padding: "8px 0",
                   }}
+                  onClick={() => setShowChangePassword(true)}
                 >
                   Change Password
                 </button>
@@ -130,6 +133,10 @@ const AdminProfile = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {showChangePassword && (
+        <ChangePassword onClose={() => setShowChangePassword(false)} />
       )}
     </div>
   );

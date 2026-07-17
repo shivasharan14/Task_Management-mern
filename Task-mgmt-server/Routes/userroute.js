@@ -9,6 +9,7 @@ const {
   loginUser,
   getAllUsers,
   updateUser,
+  changePassword,
  
 } = require("../controllers/usercontroller");
 const {auth} = require("../middleware/auth");
@@ -25,6 +26,9 @@ router.get("/userinfo/:id", auth,  getUserInfo);
 router.get("/getall", auth, getAllUsers);
 
 router.put('/update/:id', uploadImage.single('profile'), updateUser);
+
+router.put('/change-password', auth, changePassword);
+
 
 
 module.exports = router;

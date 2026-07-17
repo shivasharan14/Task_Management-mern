@@ -164,6 +164,48 @@ async function updateUser(req, res) {
     }
 }
 
+async function changePassword(req, res) {
+    try {
+        const userId = req.user.id; // token मधून येतो (auth middleware मुळे)
+        const { oldPassword, newPassword } = req.body;
+
+        if (!oldPassword || !newPassword) {
+            return res.status(400).send({
+                msg: "Old password and new password are required",
+                success: false
+            });
+        }
+
+        const user = await User.findByPk(userId);
+
+        if (!user) {
+            return res.status(404).send({ msg: "User not found", success: false });
+        }
+
+        const isOldPassCorrect = await bcryptjs.compare(oldPassword, user.password);
+
+        if (!isOldPassCorrect) {
+            return res.status(401).send({
+                msg: "Old password is incorrect",
+                success: false
+            });
+        }
+
+        const salt = bcryptjs.genSaltSync(10);
+        const hashedPassword = bcryptjs.hashSync(newPassword, salt);
+
+        await user.update({ password: hashedPassword });
+
+        res.status(200).send({
+            msg: "Password changed successfully",
+            success: true
+        });
+
+    } catch (error) {
+        console.error("Change password error:", error);
+        res.status(500).send({ msg: "Server error", success: false });
+    }
+}
 
 
 
@@ -171,5 +213,6 @@ module.exports={
     registerUser,
     loginUser,
     getUserInfo,
-    getAllUsers,updateUser
+    getAllUsers,updateUser,
+    changePassword
 }

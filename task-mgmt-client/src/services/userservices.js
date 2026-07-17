@@ -22,3 +22,9 @@ export const getUserInfo = async (id) => {
   const response = await axiosInstance.get(`/user/userinfo/${id}`);
   return response.data;
 };
+
+// Change Password
+export const changePasswordAPI = async (data) => {
+  const response = await axiosInstance.put("/user/change-password", data);
+  return response.data;
+};
